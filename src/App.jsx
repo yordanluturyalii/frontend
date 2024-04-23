@@ -4,15 +4,9 @@ import './assets/js/bootstrap'
 import './assets/js/popper'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import { BrowserRouter as Router, Routes, Route, redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const token = localStorage.getItem('token');
-  
-  if (!token) {
-    redirect('/');
-  } 
-
   return (
     <Router>
       <Routes>

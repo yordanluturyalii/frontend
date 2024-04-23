@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({name, onClick}) => {
   return (
-    <nav className="navbar navbar-expand-lg bg-primary fixed-top">
+    <nav className="navbar navbar-expand bg-primary fixed-top">
       <div className="container">
-        <Link to={"/"} className="navbar-brand text-white">
+        <Link to={"/"} className="navbar-brand text-white fs-4 fw-bold">
           Formify
         </Link>
         <div className="collapse navbar-collapse">

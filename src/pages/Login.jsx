@@ -1,6 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   email: "",
@@ -28,45 +28,27 @@ const Login = () => {
     setData({ ...data, password: e.target.value });
   };
 
-  const login = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/v1/auth/login", {
-        method: "post",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+  const login = () => {
+    axios.post("http://127.0.0.1:8000/api/v1/auth/login", data)
+    .then(response => {
+      setSuccess(response.data);
+      localStorage.setItem('name', response.data.user.name);
+      localStorage.setItem('token', response.data.user.accessToken);
 
-      const json = await response.json();
-
-      if (!response.ok) {
-        if (response.status == 401) {
-          throw new Error(json.message);
-        }
-      }
-
-      localStorage.setItem('name', json.user.name);
-      localStorage.setItem('email', json.user.email);
-      localStorage.setItem('token', json.user.accessToken);
-
-      setSuccess(json);
-
-      setTimeout(() => navigate('/home'), 3000);
-    } catch (error) {
-        setError(error.message);
-    }
+      setTimeout(() => {
+        navigate('/home');
+      }, 1000);
+    })
+    .catch(error => setError(error.response.data.message));
   };
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
     login();
-    
   };
 
   return (
     <>
-    <Navbar /> 
       <main>
         <section className="login">
           <div className="container">
@@ -77,7 +59,7 @@ const Login = () => {
                 </div>
                 <div className="card-body">
                   <form onSubmit={handleSubmitLoginForm}>
-                    {error && (
+                    {error && ( 
                       <div
                         className="alert alert-danger alert-dismissible fade show"
                         role="alert"
@@ -97,7 +79,7 @@ const Login = () => {
                         className="alert alert-success alert-dismissible fade show"
                         role="alert"
                       >
-                        {success.message.toString()}
+                        {success.message}
                       </div>
                     }
                     <div className="mb-3">
