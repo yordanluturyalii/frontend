@@ -31,11 +31,26 @@ const CreateForm = () => {
   };
 
   const createForm = (data) => {
-    axios.post("http://127.0.0.1:8000/api/v1/forms")
+    axios.post("http://127.0.0.1:8000/api/v1/forms", data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(response => {
+      console.log(response);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
-  const handleSubmitCreateForm = () => {
-
+  const handleSubmitCreateForm = (e) => {
+    e.preventDefault();
+    createForm({
+      name: e.target[0].value,
+      slug: e.target[1].value,
+      description: e.target[2].value,
+      allowed_domains: e.target[3].value,
+      limit_one_response: e.target[4].value
+    });
   }
 
   return (
@@ -46,7 +61,7 @@ const CreateForm = () => {
           <div className="header mb-5">
             <h1 className="text-center fw-bold">Create Form</h1>
           </div>
-          <form>
+          <form onSubmit={handleSubmitCreateForm}>
             <div className="form-floating my-3">
               <input
                 type="text"
@@ -83,11 +98,11 @@ const CreateForm = () => {
             <div className="form-floating mb-3">
               <input
                 type="text"
-                id="name"
+                id="domain"
                 className="form-control"
                 placeholder="Domain"
               />
-              <label htmlFor="name" className="form-label">
+              <label htmlFor="domain" className="form-label">
                 Domain
               </label>
             </div>
