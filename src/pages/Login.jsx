@@ -28,8 +28,8 @@ const Login = () => {
     setData({ ...data, password: e.target.value });
   };
 
-  const login = () => {
-    axios.post("http://127.0.0.1:8000/api/v1/auth/login", data)
+  const login = (user) => {
+    axios.post("http://127.0.0.1:8000/api/v1/auth/login", user)
     .then(response => {
       setSuccess(response.data);
       localStorage.setItem('name', response.data.user.name);
@@ -44,7 +44,7 @@ const Login = () => {
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
-    login();
+    login({email: e.target[0].value, password: e.target[1].value});
   };
 
   return (
