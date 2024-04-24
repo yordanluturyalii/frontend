@@ -61,7 +61,7 @@ const Home = () => {
                   <div className="card-header">
                     <h1 className="fs-5">
                       <Link
-                        to={form.slug}
+                        to={`/forms/${form.slug}`}
                         className="text-decoration-none text-dark"
                       >
                         {form.name}

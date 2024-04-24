@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const CreateForm = () => {
   const name = localStorage.getItem("name");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [error, setError] = useState({});
 
   useEffect(() => {
     if (!token) {
@@ -36,20 +37,25 @@ const CreateForm = () => {
         Authorization: `Bearer ${token}`
       }
     }).then(response => {
-      console.log(response);
+      if (response.status == 200) {
+        navigate('/home');
+      }
     }).catch(err => {
-      console.log(err);
+      console.log(err.response.data.errors)
+      setError(err.response.data.errors);
     });
   }
 
   const handleSubmitCreateForm = (e) => {
     e.preventDefault();
+    let domain = e.target[3].value;
+    let allowedDomain = domain.split(",");
     createForm({
       name: e.target[0].value,
       slug: e.target[1].value,
       description: e.target[2].value,
-      allowed_domains: e.target[3].value,
-      limit_one_response: e.target[4].value
+      allowed_domains: allowedDomain,
+      limit_one_response: e.target[4].checked
     });
   }
 
@@ -61,28 +67,40 @@ const CreateForm = () => {
           <div className="header mb-5">
             <h1 className="text-center fw-bold">Create Form</h1>
           </div>
-          <form onSubmit={handleSubmitCreateForm}>
-            <div className="form-floating my-3">
+          <form onSubmit={handleSubmitCreateForm} className="needs-validation">
+            <div className="form-floating my-3 has-validation">
               <input
                 type="text"
                 id="name"
-                className="form-control"
+                className={`form-control ${error.name && "is-invalid"}`}
                 placeholder="Name"
               />
               <label htmlFor="name" className="form-label">
                 Name
               </label>
+              {
+                error.name && 
+                <div className="invalid-feedback">
+                  {error.name}
+                </div>
+              }
             </div>
             <div className="form-floating mb-3">
               <input
                 type="text"
                 id="slug"
-                className="form-control"
+                className={`form-control ${error.slug && "is-invalid"}`}
                 placeholder="Slug"
               />
               <label htmlFor="slug" className="form-label">
                 Slug
               </label>
+              {
+                error.slug && 
+                <div className="invalid-feedback">
+                  {error.slug}
+                </div>
+              }
             </div>
             <div className="form-floating mb-3">
               <input
@@ -99,12 +117,19 @@ const CreateForm = () => {
               <input
                 type="text"
                 id="domain"
-                className="form-control"
+                className={`form-control ${error.allowed_domains && "is-invalid"}`}
                 placeholder="Domain"
               />
               <label htmlFor="domain" className="form-label">
                 Domain
               </label>
+              {
+                error.allowed_domains && 
+                <div className="invalid-feedback">
+                  {error.allowed_domains}
+                </div>
+              }
+              <div className="form-text">Jika domain lebih dari satu, pisahkan dengan kome</div>
             </div>
             <div className="form-check form-switch mb-3">
               <input
