@@ -37,6 +37,7 @@ const Home = () => {
       .catch((err) => console.log(err.response.data.message));
 
     localStorage.removeItem("name");
+    localStorage.removeItem("email");
     localStorage.removeItem("token");
 
     navigate("/");

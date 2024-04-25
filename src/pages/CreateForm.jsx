@@ -26,6 +26,7 @@ const CreateForm = () => {
       .catch((err) => console.log(err.response.data.message));
 
     localStorage.removeItem("name");
+    localStorage.removeItem("email");
     localStorage.removeItem("token");
 
     navigate("/");
@@ -37,9 +38,9 @@ const CreateForm = () => {
         Authorization: `Bearer ${token}`
       }
     }).then(response => {
-      if (response.status == 200) {
-        navigate('/home');
-      }
+      // if (response.status == 200) {
+      //   navigate('/home');
+      // }
     }).catch(err => {
       console.log(err.response.data.errors)
       setError(err.response.data.errors);
@@ -103,12 +104,7 @@ const CreateForm = () => {
               }
             </div>
             <div className="form-floating mb-3">
-              <input
-                type="text"
-                id="description"
-                className="form-control"
-                placeholder="Description"
-              />
+              <textarea cols="30" rows="40" style={{height: "200px"}} placeholder="Description" className="form-control"></textarea>
               <label htmlFor="description" className="form-label">
                 Description
               </label>
@@ -129,7 +125,7 @@ const CreateForm = () => {
                   {error.allowed_domains}
                 </div>
               }
-              <div className="form-text">Jika domain lebih dari satu, pisahkan dengan kome</div>
+              <div className="form-text">Jika domain lebih dari satu, pisahkan dengan koma</div>
             </div>
             <div className="form-check form-switch mb-3">
               <input
