@@ -38,9 +38,9 @@ const CreateForm = () => {
         Authorization: `Bearer ${token}`
       }
     }).then(response => {
-      // if (response.status == 200) {
-      //   navigate('/home');
-      // }
+      if (response.status == 200) {
+        navigate('/home');
+      }
     }).catch(err => {
       console.log(err.response.data.errors)
       setError(err.response.data.errors);

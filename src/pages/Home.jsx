@@ -33,7 +33,12 @@ const Home = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log(response.data)
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+      })
       .catch((err) => console.log(err.response.data.message));
 
     localStorage.removeItem("name");
